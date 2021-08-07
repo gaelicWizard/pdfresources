@@ -24,11 +24,15 @@
 %
 %<*driver>
 \RequirePackage{pdfmanagement-testphase}
-\DeclareDocumentMetadata{}
+\DeclareDocumentMetadata{testphase={tagpdf},activate=tagging,
+%debug={para=show,uncompress}
+}
 \makeatletter
 \declare@file@substitution{doc.sty}{doc-v3beta.sty}
 \makeatother
 \documentclass{l3doc}
+\usepackage{l3doc-tagging-testphase}
+\usepackage{unicode-math}
 \usepackage{array,booktabs,caption}
 \usepackage{l3pdffield-testphase,tikz}
 \hypersetup{pdfauthor=The LaTeX Project,
@@ -858,6 +862,7 @@
 % Currently no special syntax support
 % is implemented. They will be handled if needed when the code for
 % push buttons is developed and tested.
+% 
 % \begin{function}{MK/*}
 %  \begin{syntax}
 %  |MK/*| = \meta{various}

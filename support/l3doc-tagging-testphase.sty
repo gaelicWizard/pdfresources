@@ -3,7 +3,7 @@
 
 \RequirePackage{etoolbox}
 
-\pretocmd \@startsection{\par%<---hm 
+\pretocmd \@startsection{\par%<---hm
  \tagpdfparaOff\tagstructbegin{tag=H#2}\tagmcbegin{tag=H#2}}{}{\fail}
 \AddToHook{cmd/@xsect/after}{\tagmcend\tagstructend\tagpdfparaOn\ignorespaces}
 
@@ -70,7 +70,7 @@
     \normalfont\normalsize
   }
 
-\AddToHook{env/function/before}{\tagpdfparaOff\par}
+\AddToHook{env/function/before}{\par\tagpdfparaOff}
 \AddToHook{env/function/after}{\par\tagpdfparaOn}
 \cs_set_protected:Npn \__codedoc_syntax:w
   {
