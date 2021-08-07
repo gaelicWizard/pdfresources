@@ -109,7 +109,7 @@
 %      can be ensured) is incomplete, but a color profile is included and the
 %      /OutputIntent is set. The |u| variants for example do not force unicode,
 %      but they will pass the information to hyperref and hyperxmp. The |a| variants
-%      do \emph{not} enforce (or even test) a tagged pdf yet. 
+%      do \emph{not} enforce (or even test) a tagged pdf yet.
 %      More information can be found in the documentation
 %      of \pkg{l3pdfmeta}.
 %    \item[\texttt{colorprofiles}] This allows to load icc-colorprofiles. Details
@@ -125,6 +125,8 @@
 %    \texttt{tagpdf}, this load the tagpdf package, \texttt{headings}, this loads
 %    code which reimplements heading commands, and \texttt{ptagging} this loads code
 %    to allow paragraph tagging to work with engine other than luatex.
+%    The key must be used in the first |\DeclareDocumentMetadata| command, in following commands
+%    it is ignored.
 %    \item[\texttt{activate}] This key is used to enable some document wide functions. It is
 %    currently in an experimental state. The values and their behaviour are subject to change.
 %    Currently the only value is |tagging|,
