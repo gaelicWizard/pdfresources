@@ -8,7 +8,7 @@ packagedate="2021-07-31"
 bundle  = ""
 module  = "pdfmanagement-testphase"
 
-typesetexe="pdflatex-dev"
+typesetexe="lualatex-dev"
 installfiles = {"*.sty","*.cls","*.def","*.lua","*.ltx"}
 
 if options["target"] == "ctan" then
@@ -29,6 +29,7 @@ else
                 "firstaid/xcolor-patches-tmp-ltx.sty",
                 "firstaid/color-ltx.sty",
                 "support/pdfmanagement-regressiontest.sty",
+                "support/l3doc-tagging-testphase.sty",
                 "newpackages/new-bookmark.sty",
                 "newpackages/bkm-generic.def",
                 "newpackages/new-attachfile.sty",

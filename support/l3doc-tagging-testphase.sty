@@ -1,0 +1,115 @@
+\ProvidesPackage{l3doc-tagging-testphase}
+ [2021/08/07 v0.1 tagging patches for l3doc documentation (UF)]
+
+\RequirePackage{etoolbox}
+
+\pretocmd \@startsection{\par%<---hm 
+ \tagpdfparaOff\tagstructbegin{tag=H#2}\tagmcbegin{tag=H#2}}{}{\fail}
+\AddToHook{cmd/@xsect/after}{\tagmcend\tagstructend\tagpdfparaOn\ignorespaces}
+
+\ExplSyntaxOn
+\patchcmd\@outputpage
+ {\hb@xt@\textwidth{\@thehead}}
+ {
+  \hb@xt@\textwidth
+   {
+    \bool_set_false:N \l__tag_para_bool
+    \bool_gset_eq:NN  \g__ptagging__saved_in_mc_bool \g__tag_in_mc_bool
+    \bool_gset_false:N \g__tag_in_mc_bool
+    \tag_mc_begin:n {artifact=pagination}
+    \hfil
+    \tag_stop_group_begin:
+    \@thehead
+    \tag_stop_group_end:
+    \tag_mc_end:
+    \bool_gset_eq:NN \g__tag_in_mc_bool\g__ptagging_saved_in_mc_bool
+    \hfil
+   }
+ }
+{\typeout{Patching~ \string\@outputpage\space for~ tagging}}{\PATCHerror }
+
+\patchcmd\@outputpage
+ {\hb@xt@\textwidth{\@thefoot}}
+ {
+  \hb@xt@\textwidth
+   {
+    \bool_set_false:N \l__tag_para_bool
+    \bool_gset_eq:NN   \g__ptagging_saved_in_mc_bool \g__tag_in_mc_bool
+    \bool_gset_false:N \g__tag_in_mc_bool
+    \hfil
+    \tag_mc_begin:n {artifact=pagination}
+    \tag_stop_group_begin:
+    \@thefoot
+    \tag_stop_group_end:
+    \tag_mc_end:
+    \bool_gset_eq:NN \g__tag_in_mc_bool\g__ptagging_saved_in_mc_bool
+    \hfil
+   }
+ }
+{\typeout{Patching~ \string\@outputpage\space for~ tagging}}{\PATCHerror }
+
+
+\cs_set_protected:Npn \__codedoc_typeset_functions:
+  {
+    \small\ttfamily
+    \__codedoc_target:
+    \Hy@MakeCurrentHref { HD. \int_use:N \c@HD@hypercount }
+    \tag_mc_end_push:
+    \tag_mc_begin:n {artifact=pagination}
+    \tag_stop_group_begin:
+    \begin{tabular} [t] { @{} l @{} >{\hspace{\tabcolsep}} r @{} }
+      \toprule
+      \__codedoc_function_extra_labels:
+      \__codedoc_names_typeset:
+      \__codedoc_typeset_dates:
+      \bottomrule
+    \end{tabular}
+    \tag_stop_group_end:
+    \tag_mc_end:
+    \tag_mc_begin_pop:n{}
+    \normalfont\normalsize
+  }
+
+\AddToHook{env/function/before}{\tagpdfparaOff\par}
+\AddToHook{env/function/after}{\par\tagpdfparaOn}
+\cs_set_protected:Npn \__codedoc_syntax:w
+  {
+    \box_if_empty:NF \g__codedoc_syntax_box
+      { \msg_error:nn { l3doc } { multiple-syntax } }
+    \dim_set:Nn \l__codedoc_syntax_dim
+      {
+        \textwidth
+        \bool_if:NT \l__codedoc_long_name_bool
+          { + 0.75 \marginparwidth - \l__codedoc_trial_width_dim }
+      }
+    \hbox_gset:Nw \g__codedoc_syntax_box
+      \small \ttfamily
+        \arrayrulecolor{white}
+      \begin{tabular} { @{} l @{} }
+        \noalign{\tag_mc_begin:n{artifact}} \toprule\noalign{\tag_mc_end:}
+        \tag_struct_begin:n{tag=Code}\tag_mc_begin:n{tag=Code}
+        \begin{minipage}[t]{\l__codedoc_syntax_dim}
+          \raggedright
+          \obeyspaces
+          \obeylines
+  }
+
+\cs_set_protected:Npn \__codedoc_syntax_end:
+  {
+        \end{minipage}
+        \tag_mc_end: \tag_struct_end:
+      \end{tabular}
+      \arrayrulecolor{black}
+    \hbox_gset_end:
+    \bool_if:NF \l__codedoc_in_function_bool
+      {
+        \begin{quote}
+          \mode_leave_vertical:
+          \box_use_drop:N \g__codedoc_syntax_box
+        \end{quote}
+      }
+  }
+\AddToHook{env/syntax/after}{\par\tagpdfparaOn}
+
+\ExplSyntaxOff
+\endinput
