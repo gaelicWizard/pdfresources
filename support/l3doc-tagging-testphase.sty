@@ -2,10 +2,35 @@
  [2021/08/07 v0.1 tagging patches for l3doc documentation (UF)]
 
 \RequirePackage{etoolbox}
+\RequirePackage{array}
 
 \pretocmd \@startsection{\par%<---hm
  \tagpdfparaOff\tagstructbegin{tag=H#2}\tagmcbegin{tag=H#2}}{}{\fail}
 \AddToHook{cmd/@xsect/after}{\tagmcend\tagstructend\tagpdfparaOn\ignorespaces}
+
+%tabularx
+\tagpdfsetup{ add-new-tag=TableFake/P}
+\AddToHook{env/tabularx/before}{\par\tagpdfparaOff\tagstructbegin{tag=TableFake}\tagmcbegin{tag=TableFake}}
+\AddToHook{env/tabularx/after} {\tagstructend\tagmcend\par\tagpdfparaOn}
+
+
+%for later
+\let\tagTXtest\write
+\newcolumntype\TRstart[1]{%
+ >{\ifx\tagTXtest\write \tagstructbegin{tag=TR}\tagstructbegin{tag=TD}\tagmcbegin{tag=TD}\fi}#1<{\ifx\tagTXtest\write \tagmcend\tagstructend\fi}}
+\newcolumntype\TRstop[1]{%
+ >{\ifx\tagTXtest\write \tagstructbegin{tag=TD}\tagmcbegin{tag=TD}\fi}#1<{\ifx\tagTXtest\write \tagmcend\tagstructend\tagstructend\fi}}
+\newcolumntype\TD[1]{%
+ >{\ifx\tagTXtest\write \tagstructbegin{tag=TD}\tagmcbegin{tag=TD}\fi}#1<{\ifx\tagTXtest\write \tagmcend\tagstructend\fi}}
+\newcolumntype\THstart[1]{%
+ >{\ifx\tagTXtest\write \tagstructbegin{tag=THead}%
+   \tagstructbegin{tag=TR}%
+   \tagstructbegin{tag=TH,attribute-class=TH-col}\tagmcbegin{tag=TH}\fi}#1<{\ifx\tagTXtest\write \tagmcend\tagstructend\fi}}
+\newcolumntype\THstop[1]{%
+ >{\ifx\tagTXtest\write \tagstructbegin{tag=TH,attribute-class=TH-col}\tagmcbegin{tag=TH}\fi}#1
+  <{\ifx\tagTXtest\write \tagmcend\tagstructend\tagstructend\tagstructend\fi}}
+\newcolumntype\TH[1]{%
+ >{\ifx\tagTXtest\write \tagstructbegin{tag=TH,attribute-class=TH-col}\tagmcbegin{tag=TH}\fi }#1<{\ifx\tagTXtest\write \tagmcend\tagstructend \fi}}
 
 \ExplSyntaxOn
 \patchcmd\@outputpage
