@@ -41,6 +41,36 @@
   \csname beamer@thcbg@#1\endcsname%
 }
 
+%\def\beamer@thc@usecolor#1{%
+%  \begingroup%
+%    \beamer@thc@prepcolor%
+%    \beamer@thc@docolor{#1}%
+%    \ifx\beamer@thc@fg\@empty\def\beamer@thc@fg{fg}\fi%
+%    \ifx\beamer@thc@bg\@empty\def\beamer@thc@bg{bg}\fi%
+%    \global\let\beamer@thc@gfg\beamer@thc@fg%
+%    \global\let\beamer@thc@gbg\beamer@thc@bg%
+%    %\globalcolorstrue%
+%  \endgroup%
+%   \colorlet{#1.fg}{\beamer@thc@gfg}%
+%   \colorlet{#1.bg}{\beamer@thc@gbg}%
+%}
+
+% Joseph, https://chat.stackexchange.com/transcript/message/60198801#60198801
+\newcount\beamer@smuggle@color@cnt
+\def\bearm@smuggle@color#1#2{%
+  \global\advance\beamer@smuggle@color@cnt 1 %
+  \edef\@tempa{beamer@smuggle@color@\number\beamer@smuggle@color@cnt}%
+  \expandafter\xdef\csname\@tempa\endcsname
+    {%
+      \noexpand\colorlet{#1}{\noexpand#2}%
+      \noexpand\ifnum\noexpand\currentgrouplevel=0 \noexpand\else
+        \noexpand\aftergroup\expandafter\noexpand
+          \csname\@tempa\endcsname
+      \noexpand\fi
+    }%
+  \expandafter\aftergroup\csname\@tempa\endcsname
+}
+
 \def\beamer@thc@usecolor#1{%
   \begingroup%
     \beamer@thc@prepcolor%
@@ -49,11 +79,11 @@
     \ifx\beamer@thc@bg\@empty\def\beamer@thc@bg{bg}\fi%
     \global\let\beamer@thc@gfg\beamer@thc@fg%
     \global\let\beamer@thc@gbg\beamer@thc@bg%
-    %\globalcolorstrue%
+    \bearm@smuggle@color{#1.fg}{\beamer@thc@gfg}%
+    \bearm@smuggle@color{#1.bg}{\beamer@thc@gbg}%
   \endgroup%
-   \colorlet{#1.fg}{\beamer@thc@gfg}%
-   \colorlet{#1.bg}{\beamer@thc@gbg}%
 }
+
 
 \def\setbeamercolor{\@ifstar{\beamer@clearbeamercolor}{\beamer@setbeamercolor}}
 
