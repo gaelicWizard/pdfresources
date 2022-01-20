@@ -57,7 +57,7 @@
 
 % Joseph, https://chat.stackexchange.com/transcript/message/60198801#60198801
 \newcount\beamer@smuggle@color@cnt
-\def\bearm@smuggle@color#1#2{%
+\def\beamer@smuggle@color#1#2{%
   \global\advance\beamer@smuggle@color@cnt 1 %
   \edef\@tempa{beamer@smuggle@color@\number\beamer@smuggle@color@cnt}%
   \expandafter\xdef\csname\@tempa\endcsname
@@ -79,8 +79,8 @@
     \ifx\beamer@thc@bg\@empty\def\beamer@thc@bg{bg}\fi%
     \global\let\beamer@thc@gfg\beamer@thc@fg%
     \global\let\beamer@thc@gbg\beamer@thc@bg%
-    \bearm@smuggle@color{#1.fg}{\beamer@thc@gfg}%
-    \bearm@smuggle@color{#1.bg}{\beamer@thc@gbg}%
+    \beamer@smuggle@color{#1.fg}{\beamer@thc@gfg}%
+    \beamer@smuggle@color{#1.bg}{\beamer@thc@gbg}%
   \endgroup%
 }
 
@@ -137,6 +137,8 @@
   \begingroup%
     %\global\@namelet{\string\color@ #2.fg}{\string\color@ temp@fg}%
     %\global\@namelet{\string\color@ #2.bg}{\string\color@ temp@bg}%
+    \beamer@smuggle@color{#2.fg}{temp@fg}%
+    \beamer@smuggle@color{#2.bg}{temp@bg}%
   \endgroup%
     \colorlet{#2.fg}{temp@fg}%
     \colorlet{#2.bg}{temp@bg}%
