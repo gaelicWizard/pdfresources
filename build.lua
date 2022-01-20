@@ -31,6 +31,7 @@ else
                 "firstaid/color-ltx.sty",
                 "firstaid/output-patches-tmp-ltx.dtx",
                 "firstaid/output-patches-tmp-ltx.dtx",
+                "firstaid/beamerbasecolor-ltx.sty",
                 "support/pdfmanagement-regressiontest.sty",
                 "newpackages/new-bookmark.sty",
                 "newpackages/bkm-generic.def",
